@@ -7,9 +7,9 @@
 #include "gamemanager.hpp"
 #include "constants.hpp"
 
-int main() {
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+int main () {
+    SDL_Window * window;
+    SDL_Renderer * renderer;
     init();
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer("C++Sweeper", 1920, 1080, 0, &window, &renderer);

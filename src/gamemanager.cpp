@@ -8,11 +8,11 @@
 std::vector<std::vector<Tile>> tiles;
 GameState gameState;
 
-bool outOfBounds(int x, int y) {
+bool outOfBounds (int x, int y) {
     return (x < 0 || x >= constants::SIZE_X || y < 0 || y >= constants::SIZE_Y);
 }
 
-void initTiles() {
+void initTiles () {
     tiles = std::vector<std::vector<Tile>>(constants::SIZE_X);
     for (int x = 0; x < constants::SIZE_X; x++) {
         tiles[x] = std::vector<Tile>(constants::SIZE_Y);
@@ -23,7 +23,7 @@ void initTiles() {
     }
 }
 
-void initMines() {
+void initMines () {
     srand(time(0));
     int remainingMines = constants::MINE_COUNT;
     while (remainingMines > 0) {
@@ -37,7 +37,7 @@ void initMines() {
     gameState.remainingMines = constants::SIZE_X * constants::SIZE_Y - constants::MINE_COUNT;
 }
 
-void initSurroundingMines() {
+void initSurroundingMines () {
     for (int x = 0; x < constants::SIZE_X; x++) {
         for (int y = 0; y < constants::SIZE_Y; y++) {
             int surroundingMines = 0;
@@ -52,7 +52,7 @@ void initSurroundingMines() {
     }
 }
 
-void init() {
+void init () {
     gameState.progress = Initializing;
     initTiles();
     initMines();
@@ -61,7 +61,7 @@ void init() {
     gameState.progress = Playing;
 }
 
-void reveal(int x, int y) {
+void reveal (int x, int y) {
     if (gameState.progress != Playing) return;
     if (tiles[x][y].isRevealed()) return;
     revealNoSpread(x, y);
@@ -74,14 +74,22 @@ void reveal(int x, int y) {
             }
         }
     }
+    if (gameState.progress == Lose) {
+        for (int x1 = 0; x1 < constants::SIZE_X; x1++) {
+            for (int y1 = 0; y1 < constants::SIZE_Y; y1++) {
+                if (x1 == x && y1 == y) continue;
+                if (tiles[x1][y1].isMine()) revealNoSpread(x1, y1);
+            }
+        }
+    }
 }
 
-void revealNoSpread(int x, int y) {
+void revealNoSpread (int x, int y) {
     gameState.progress = tiles[x][y].reveal();
     if (tiles[x][y].state == REVEALED_BLANK) gameState.remainingMines --;
 }
 
-void flag(int x, int y) {
+void flag (int x, int y) {
     if (gameState.progress != Playing) return;
     tiles[x][y].flag();
 }

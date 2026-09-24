@@ -27,18 +27,18 @@ SDL_Color Tile::getColor() {
     return SDL_Color{0,0,0,0xFF};
 }
 
-GameProgress Tile::reveal() {
+GameProgress Tile::reveal () {
     TileState newstates[6] = {REVEALED_MINE, REVEALED_BLANK, FLAGGED_MINE, FLAGGED_BLANK, REVEALED_MINE, REVEALED_BLANK};
     state = newstates[state];
     if (state == REVEALED_MINE) return Lose;
     return Playing;
 }
-void Tile::flag() {
+void Tile::flag () {
     TileState newstates[6] = {FLAGGED_MINE, FLAGGED_BLANK, HIDDEN_MINE, HIDDEN_BLANK, REVEALED_MINE, REVEALED_BLANK};
     state = newstates[state];
 }
 
-bool Tile::isFlagged() {
+bool Tile::isFlagged () {
     switch (state) {
         case FLAGGED_BLANK:
         case FLAGGED_MINE:
@@ -48,7 +48,7 @@ bool Tile::isFlagged() {
     }
 }
 
-bool Tile::isMine() {
+bool Tile::isMine () {
     switch (state) {
         case HIDDEN_MINE:
         case FLAGGED_MINE:
@@ -59,7 +59,7 @@ bool Tile::isMine() {
     }
 }
 
-bool Tile::isRevealed() {
+bool Tile::isRevealed () {
     switch (state) {
         case REVEALED_MINE:
         case REVEALED_BLANK:

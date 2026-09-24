@@ -14,11 +14,11 @@ struct GameState {
 };
 
 extern GameState gameState;
-bool outOfBounds(int x, int y);
-void init();
-void reveal(int x, int y);
-void revealNoSpread(int x, int y);
-void flag(int x, int y);
+bool outOfBounds (int x, int y);
+void init ();
+void reveal (int x, int y);
+void revealNoSpread (int x, int y);
+void flag (int x, int y);
 
 #include "tiles.hpp"
 extern std::vector<std::vector<Tile>> tiles;
