@@ -3,8 +3,8 @@ dev: dev-build
 
 dev-build:
 	cmake --preset debug
-	cmake --build out/build/debug --target c++sweepe
+	cmake --build out/build/debug --target c++sweeper
 
 release:
 	cmake --preset release
-	cmake --build out/build/release --target c++sweepe--target c++sweepe
+	cmake --build out/build/release --target c++sweeper --target c++sweeper
