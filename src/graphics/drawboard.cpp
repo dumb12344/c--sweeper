@@ -16,7 +16,6 @@
 
 using namespace constants;
 
-
 void drawRevealed (SDL_Renderer * renderer) {
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
@@ -61,13 +60,15 @@ void drawUnrevealed (SDL_Renderer * renderer) {
     }
 }
 
-void drawSelected (SDL_Renderer * renderer) {
+void drawSelected (SDL_Renderer * renderer, bool underOutline) {
     float mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     int mouseTileX = mouseX / TILE_SIZE;
     int mouseTileY = mouseY / TILE_SIZE;
     if (outOfBounds(mouseTileX, mouseTileY)) return;
     Tile tile = tiles[mouseTileX][mouseTileY];
+    if (underOutline && !tile.isRevealed()) return;
+    else if (!underOutline && tile.isRevealed()) return;
     if (tile.surroundingMines > 0 || !tile.isRevealed()) {
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF * 0.2);
         SDL_FRect tileRect = {(float) mouseTileX * TILE_SIZE, (float) mouseTileY * TILE_SIZE, TILE_SIZE, TILE_SIZE};
@@ -149,9 +150,10 @@ void DrawBoard::draw (SDL_Renderer * renderer) {
     TTF_Font * font = TTF_OpenFontIO(fontStream, true, TILE_SIZE);
     if (!flag_texture) {return;}
     drawRevealed(renderer);
+    drawSelected(renderer, true);
     drawOutline(renderer);
     drawUnrevealed(renderer);
-    drawSelected(renderer);
+    drawSelected(renderer, false);
     drawExtras(renderer, font, flag_texture);
 
     SDL_RenderPresent(renderer);
