@@ -1,11 +1,17 @@
-#include "graphics/drawboard.hpp"
+#include "graphics/drawboard.h"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_mouse.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cmath>
-#include "main.hpp"
-#include "gamemanager.hpp"
-#include "constants.hpp"
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_init.h>
+#include <SDL3/SDL_main.h>
+#include <SDL3/SDL_oldnames.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
+#include <SDL3_image/SDL_image.h>
+#include "gamemanager.h"
+#include "constants.h"
 
 int main () {
     SDL_Window * window;

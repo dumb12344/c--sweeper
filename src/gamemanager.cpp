@@ -1,9 +1,9 @@
 #include <cstdlib>
-#include <iostream>
+#include <ctime>
 #include <vector>
-#include "gamemanager.hpp"
-#include "constants.hpp"
-#include "tiles.hpp"
+#include "gamemanager.h"
+#include "constants.h"
+#include "tiles.h"
 
 std::vector<std::vector<Tile>> tiles;
 GameState gameState;
@@ -57,7 +57,6 @@ void init () {
     initTiles();
     initMines();
     initSurroundingMines();
-    std::cout << "Initialized" << std::endl;
     gameState.progress = Playing;
 }
 
@@ -75,10 +74,10 @@ void reveal (int x, int y) {
         }
     }
     if (gameState.progress == Lose) {
-        for (int x1 = 0; x1 < constants::SIZE_X; x1++) {
-            for (int y1 = 0; y1 < constants::SIZE_Y; y1++) {
-                if (x1 == x && y1 == y) continue;
-                if (tiles[x1][y1].isMine()) revealNoSpread(x1, y1);
+        for (int revealX = 0; revealX < constants::SIZE_X; revealX++) {
+            for (int revealY = 0; revealY < constants::SIZE_Y; revealY++) {
+                if (revealX == x && revealY == y) continue;
+                if (tiles[revealX][revealY].isMine()) revealNoSpread(revealX, revealY);
             }
         }
     }

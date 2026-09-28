@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL3/SDL_pixels.h>
-
-enum GameProgress : int; 
+#include "gamemanager.h"
 
 enum TileState {
     HIDDEN_MINE,
@@ -11,6 +10,9 @@ enum TileState {
     REVEALED_MINE,
     REVEALED_BLANK
 };
+
+enum GameProgress : int; 
+
 
 struct Tile {
     TileState state;

@@ -9,14 +9,13 @@ find_package(SDL3_ttf REQUIRED CONFIG)
 
 add_executable(
     c++sweeper src/main.cpp
-    src/main.hpp
     src/graphics/drawboard.cpp
-    src/graphics/drawboard.hpp
-    src/constants.hpp
+    src/graphics/drawboard.h
+    src/constants.h
     src/tiles.cpp
-    src/tiles.hpp
+    src/tiles.h
     src/gamemanager.cpp
-    src/gamemanager.hpp
+    src/gamemanager.h
 )
 
 target_link_libraries(c++sweeper PRIVATE SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf)

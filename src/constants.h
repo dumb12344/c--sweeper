@@ -1,11 +1,13 @@
-#include "graphics/drawboard.hpp"
+#pragma once
+#include "graphics/drawboard.h"
 #include <SDL3/SDL_pixels.h>
+
 namespace constants {
-    static const int SIZE_X = 10;
-    static const int SIZE_Y = 8;
-    static const int MINE_COUNT = 10;
-    static const int TILE_SIZE = 100;
-    static const SDL_Color NUMBER_COLORS[] = {
+    const int SIZE_X = 10;
+    const int SIZE_Y = 8;
+    const int MINE_COUNT = 10;
+    const int TILE_SIZE = 100;
+    const SDL_Color NUMBER_COLORS[] = {
         colorHex(0xffffff),
         colorHex(0x1976d2),
         colorHex(0x388e3c),

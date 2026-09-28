@@ -1,7 +1,8 @@
-#include "tiles.hpp"
-#include "gamemanager.hpp"
-#include "graphics/drawboard.hpp"
+#include "tiles.h"
+#include "gamemanager.h"
+#include "graphics/drawboard.h"
 #include <SDL3/SDL_pixels.h>
+
 SDL_Color Tile::getColor() {
     switch (state) {
         case HIDDEN_BLANK:

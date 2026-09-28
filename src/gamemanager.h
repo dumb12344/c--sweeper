@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "tiles.h"
 
 enum GameProgress : int {
     Initializing,
@@ -20,5 +21,6 @@ void reveal (int x, int y);
 void revealNoSpread (int x, int y);
 void flag (int x, int y);
 
-#include "tiles.hpp"
+struct Tile;
+
 extern std::vector<std::vector<Tile>> tiles;

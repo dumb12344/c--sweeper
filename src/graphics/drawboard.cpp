@@ -1,4 +1,4 @@
-#include "drawboard.hpp"
+#include "drawboard.h"
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_iostream.h>
 #include <SDL3/SDL_render.h>
@@ -8,9 +8,10 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cstddef>
 #include <string>
-#include "../constants.hpp"
-#include "../gamemanager.hpp"
-#include "../tiles.hpp"
+#include "../constants.h"
+#include "../gamemanager.h"
+#include "../tiles.h"
+
 using namespace constants;
 
 
@@ -140,3 +141,12 @@ void DrawBoard::draw (SDL_Renderer * renderer) {
     TTF_CloseFont(font);
     SDL_DestroyTexture(flag_texture);
 }
+
+SDL_Color colorHex (Uint32 code) {
+    return {
+        static_cast<Uint8>((code >> 16) & 0xFF),
+        static_cast<Uint8>((code >> 8)  & 0xFF),
+        static_cast<Uint8>((code)       & 0xFF),
+        0xFF
+    };
+};
