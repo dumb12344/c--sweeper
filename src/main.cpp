@@ -1,6 +1,9 @@
 #include "graphics/drawboard.h"
+#include <SDL3/SDL_error.h>
 #include <SDL3/SDL_events.h>
+#include <SDL3/SDL_log.h>
 #include <SDL3/SDL_mouse.h>
+#include <SDL3/SDL_rect.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cmath>
 #include <SDL3/SDL.h>
@@ -13,15 +16,32 @@
 #include "gamemanager.h"
 #include "constants.h"
 
+float constants::TILE_SIZE = 50;
+int constants::SCREEN_WIDTH = 50;
+int constants::SCREEN_HEIGHT = 50;
+
+
 int main () {
     SDL_Window * window;
     SDL_Renderer * renderer;
     init();
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer("C++Sweeper", 1920, 1080, 0, &window, &renderer);
+    SDL_Rect displayRect;
+    SDL_DisplayID displayID = SDL_GetPrimaryDisplay();
+    SDL_GetDisplayBounds(displayID, &displayRect);
+    constants::SCREEN_WIDTH = displayRect.w;
+    constants::SCREEN_HEIGHT = displayRect.h;
+    if (displayRect.h < displayRect.w) {
+        constants::TILE_SIZE = (float) displayRect.h / constants::SIZE_Y;
+    }
+    else {
+        constants::TILE_SIZE = (float) displayRect.w / constants::SIZE_X;
+    }
+    SDL_CreateWindowAndRenderer("C++Sweeper", displayRect.w, displayRect.h, 0, &window, &renderer);
     TTF_Init();
     SDL_RenderClear(renderer);
     SDL_ShowWindow(window);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     bool running = true;
     while (running) {
         SDL_Event event;
@@ -36,6 +56,9 @@ int main () {
                         if (!tiles[x][y].isMine()) revealNoSpread(x, y);
                     }
                 }
+            }
+            if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
+                init();
             }
 
             if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {

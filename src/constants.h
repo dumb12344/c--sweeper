@@ -6,7 +6,9 @@ namespace constants {
     const int SIZE_X = 10;
     const int SIZE_Y = 8;
     const int MINE_COUNT = 10;
-    const int TILE_SIZE = 100;
+    extern float TILE_SIZE;
+    extern int SCREEN_WIDTH;
+    extern int SCREEN_HEIGHT;
     const SDL_Color NUMBER_COLORS[] = {
         colorHex(0xffffff),
         colorHex(0x1976d2),

@@ -7,4 +7,4 @@ dev-build:
 
 release:
 	cmake --preset release
-	cmake --build out/build/release --target c++sweeper --target c++sweeper
+	cmake --build out/build/release --target c++sweeper

@@ -1,6 +1,8 @@
 #include "drawboard.h"
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_iostream.h>
+#include <SDL3/SDL_log.h>
+#include <SDL3/SDL_mouse.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
@@ -59,6 +61,20 @@ void drawUnrevealed (SDL_Renderer * renderer) {
     }
 }
 
+void drawSelected (SDL_Renderer * renderer) {
+    float mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    int mouseTileX = mouseX / TILE_SIZE;
+    int mouseTileY = mouseY / TILE_SIZE;
+    if (outOfBounds(mouseTileX, mouseTileY)) return;
+    Tile tile = tiles[mouseTileX][mouseTileY];
+    if (tile.surroundingMines > 0 || !tile.isRevealed()) {
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF * 0.2);
+        SDL_FRect tileRect = {(float) mouseTileX * TILE_SIZE, (float) mouseTileY * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+        SDL_RenderFillRect(renderer, &tileRect);
+    }
+}
+
 void drawExtras (SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_texture) {
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
@@ -88,8 +104,8 @@ void drawExtras (SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_te
     if (gameState.progress == Lose) {
         SDL_Surface * surface = TTF_RenderText_Blended(font, "You Lose!", 0, {0xFF, 0x00, 0x00, 0xFF});
         SDL_FRect destination_rect = {
-            (float) (1920 - surface -> w) / 2.0f,
-            (float) (1080 - surface -> h) / 2.0f,
+            (float) (constants::SCREEN_WIDTH - surface -> w) / 2.0f,
+            (float) (constants::SCREEN_HEIGHT - surface -> h) / 2.0f,
             (float) surface -> w,
             (float) surface -> h
         };
@@ -102,8 +118,8 @@ void drawExtras (SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_te
     if (gameState.progress == Win) {
         SDL_Surface * surface = TTF_RenderText_Blended(font, "You Win!", 0, {0x88, 0x55, 0x00, 0xFF});
         SDL_FRect destination_rect = {
-            (float) (1920 - surface -> w) / 2.0f,
-            (float) (1080 - surface -> h) / 2.0f,
+            (float) (constants::SCREEN_WIDTH - surface -> w) / 2.0f,
+            (float) (constants::SCREEN_HEIGHT - surface -> h) / 2.0f,
             (float) surface -> w,
             (float) surface -> h
         };
@@ -135,6 +151,7 @@ void DrawBoard::draw (SDL_Renderer * renderer) {
     drawRevealed(renderer);
     drawOutline(renderer);
     drawUnrevealed(renderer);
+    drawSelected(renderer);
     drawExtras(renderer, font, flag_texture);
 
     SDL_RenderPresent(renderer);
