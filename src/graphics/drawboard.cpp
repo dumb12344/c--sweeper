@@ -87,7 +87,7 @@ void drawExtras (SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_te
 
             if (tile.surroundingMines > 0 && tile.isRevealed() && !tile.isMine()
         ) {
-                SDL_Surface * surface = TTF_RenderText_Blended(font, std::to_string(tile.surroundingMines).c_str(), 0, NUMBER_COLORS[tiles[x][y].surroundingMines]);
+                SDL_Surface * surface = TTF_RenderText_Blended(font, std::to_string(tile.surroundingMines).c_str(), 0, colorHex(NUMBER_COLORS[tiles[x][y].surroundingMines]));
                 destination_rect = {
                     (float) x * TILE_SIZE + (TILE_SIZE - surface -> w) / 2.0f,
                     (float) y * TILE_SIZE + (TILE_SIZE - surface -> h) / 2.0f,
@@ -101,6 +101,8 @@ void drawExtras (SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_te
             }
         }
     }
+
+    TTF_SetFontSize(font, (float) SCREEN_WIDTH / 10);
 
     if (gameState.progress == Lose) {
         SDL_Surface * surface = TTF_RenderText_Blended(font, "You Lose!", 0, {0xFF, 0x00, 0x00, 0xFF});
