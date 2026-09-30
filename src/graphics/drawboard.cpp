@@ -16,7 +16,8 @@
 
 using namespace constants;
 
-void drawRevealed (SDL_Renderer * renderer) {
+void drawRevealed(SDL_Renderer * renderer)
+{
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
             Tile tile = tiles[x][y];
@@ -29,7 +30,8 @@ void drawRevealed (SDL_Renderer * renderer) {
     }
 }
 
-void drawOutline (SDL_Renderer * renderer) {
+void drawOutline(SDL_Renderer * renderer)
+{
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
             Tile tile = tiles[x][y];
@@ -47,7 +49,8 @@ void drawOutline (SDL_Renderer * renderer) {
     }
 }
 
-void drawUnrevealed (SDL_Renderer * renderer) {
+void drawUnrevealed(SDL_Renderer * renderer)
+{
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
             Tile tile = tiles[x][y];
@@ -60,7 +63,8 @@ void drawUnrevealed (SDL_Renderer * renderer) {
     }
 }
 
-void drawSelected (SDL_Renderer * renderer, bool underOutline) {
+void drawSelected(SDL_Renderer * renderer, bool underOutline)
+{
     float mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     int mouseTileX = mouseX / TILE_SIZE;
@@ -76,7 +80,8 @@ void drawSelected (SDL_Renderer * renderer, bool underOutline) {
     }
 }
 
-void drawExtras (SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_texture) {
+void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_texture)
+{
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
             Tile tile = tiles[x][y];
@@ -141,7 +146,8 @@ static const unsigned char fontData[] = {
     #embed "../../assets/google_sans.otf"
 };
 
-void DrawBoard::draw (SDL_Renderer * renderer) {
+void drawBoard(SDL_Renderer * renderer)
+{
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
     SDL_IOStream * imageStream = SDL_IOFromConstMem(imageData, sizeof(imageData));
@@ -163,7 +169,8 @@ void DrawBoard::draw (SDL_Renderer * renderer) {
     SDL_DestroyTexture(flag_texture);
 }
 
-SDL_Color colorHex (Uint32 code) {
+SDL_Color colorHex(Uint32 code)
+{
     return {
         static_cast<Uint8>((code >> 16) & 0xFF),
         static_cast<Uint8>((code >> 8)  & 0xFF),

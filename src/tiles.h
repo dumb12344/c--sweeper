@@ -13,13 +13,11 @@ enum TileState {
 
 enum GameProgress : int; 
 
-
 struct Tile {
     TileState state;
     int surroundingMines;
     bool altColor;
     SDL_Color getColor ();
-    public:
     GameProgress reveal ();
     void flag ();
     bool isMine ();

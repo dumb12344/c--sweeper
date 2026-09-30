@@ -33,7 +33,8 @@ int constants::MINE_COUNT = 10;
 // const int SIZE_Y = 20;
 // const int MINE_COUNT = 99;
 
-int main (int argCount, char **argValues) {
+int main(int argCount, char **argValues)
+{
     if (argCount > 1) {
         int opt;
         while ((opt = getopt(argCount, argValues, "x:y:c:")) != -1) {
@@ -108,10 +109,10 @@ int main (int argCount, char **argValues) {
                     flag(tileX, tileY);
                 }
             }
-            DrawBoard::draw(renderer);
+            drawBoard(renderer);
         }
     }
-    
+
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
