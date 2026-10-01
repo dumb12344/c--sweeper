@@ -172,9 +172,9 @@ void drawBoard(SDL_Renderer * renderer)
 SDL_Color colorHex(Uint32 code)
 {
     return {
-        static_cast<Uint8>((code >> 16) & 0xFF),
-        static_cast<Uint8>((code >> 8)  & 0xFF),
-        static_cast<Uint8>((code)       & 0xFF),
+        (Uint8) ((code >> 16) & 0xFF),
+        (Uint8) ((code >> 8)  & 0xFF),
+        (Uint8) ((code)       & 0xFF),
         0xFF
     };
 };
