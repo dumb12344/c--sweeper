@@ -22,3 +22,9 @@ release-clang:
 
 clean:
 	rm -rf out
+
+release-emscripten:
+	mkdir out/emscripten -p
+	cd out/emscripten && /usr/lib/emscripten/emcmake cmake ../..
+	cd out/emscripten && cmake --build . --target c++sweeper
+	cp src/c++sweeper.html out/emscripten/c++sweeper.html

@@ -14,7 +14,13 @@ Prerequisites:
 
 You will need `libc++`, `sdl3`, `sdl3_image`, `sdl3_ttf`, `cmake`, and either `gcc` or `clang` to build 
 
-Build steps:
-use `make` or `make test` for dev test, use `make release` or `make dev` to build, outputs in `out/build/dev_or_release/c++sweeper`
+Clone with `git clone https://github.com/dumb12344/c--sweeper.git --depth 1 --recurse-submodules`
+
+### Build steps:
+use `make` or `make test` for dev test, use `make release` or `make dev` to build, outputs in `out/dev_or_release/c++sweeper`
 
 use `make test-clang`, `make release-clang`, or `make dev-clang` to build with clang
+### Web build:
+You need to install `emsdk`, and you may need to change the Makefile for non-unix systems
+
+use `make release-emscripten` to build web release, outputs in `out/emscripten/c++sweeper.[html, js, wasm]`

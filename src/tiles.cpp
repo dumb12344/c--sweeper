@@ -36,6 +36,7 @@ GameProgress Tile::reveal()
     if (state == REVEALED_MINE) return Lose;
     else return Playing;
 }
+
 void Tile::flag()
 {
     TileState newstates[6] = {FLAGGED_MINE, FLAGGED_BLANK, HIDDEN_MINE, HIDDEN_BLANK, REVEALED_MINE, REVEALED_BLANK};

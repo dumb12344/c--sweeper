@@ -13,7 +13,7 @@ bool outOfBounds(int x, int y)
     return (x < 0 || x >= constants::SIZE_X || y < 0 || y >= constants::SIZE_Y);
 }
 
-void initTiles()
+static void initTiles()
 {
     tiles = std::vector<std::vector<Tile>>(constants::SIZE_X);
     for (int x = 0; x < constants::SIZE_X; x++) {
@@ -25,7 +25,7 @@ void initTiles()
     }
 }
 
-void initMines()
+static void initMines()
 {
     srand(time(0));
     int remainingMines = constants::MINE_COUNT;
@@ -40,7 +40,7 @@ void initMines()
     gameState.remainingMines = constants::SIZE_X * constants::SIZE_Y - constants::MINE_COUNT;
 }
 
-void initSurroundingMines()
+static void initSurroundingMines()
 {
     for (int x = 0; x < constants::SIZE_X; x++) {
         for (int y = 0; y < constants::SIZE_Y; y++) {

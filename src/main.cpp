@@ -16,6 +16,9 @@
 #include "gamemanager.h"
 #include "constants.h"
 #include <unistd.h>
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 
 float constants::TILE_SIZE = 50;
 int constants::SCREEN_WIDTH = 50;
@@ -32,6 +35,67 @@ int constants::MINE_COUNT = 10;
 // const int SIZE_X = 24;
 // const int SIZE_Y = 20;
 // const int MINE_COUNT = 99;
+
+static bool running = true;
+
+static SDL_Window * window;
+static SDL_Renderer * renderer;
+
+static void mainLoop()
+{
+    if (!running) {
+        SDL_DestroyWindow(window);
+        SDL_DestroyRenderer(renderer);
+        SDL_Quit();
+        #ifdef __EMSCRIPTEN__
+        emscripten_cancel_main_loop();
+        #else
+        exit(0);
+        #endif
+    }
+
+    SDL_Event event;
+    if (gameState.remainingMines <= 0) gameState.progress = Win;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_EVENT_QUIT) {
+            running = false;
+        }
+
+        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_M) {
+            for (int x = 0; x < constants::SIZE_X; x++) {
+                for (int y = 0; y < constants::SIZE_Y; y++) {
+                    if (!tiles[x][y].isMine()) revealNoSpread(x, y);
+                }
+            }
+        }
+        
+        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
+            init();
+        }
+
+        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_Q) {
+            running = false;
+        }
+
+        if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+            int tileX = floor(event.button.x / constants::TILE_SIZE);
+            int tileY = floor(event.button.y / constants::TILE_SIZE);
+            if (outOfBounds(tileX, tileY)) continue;
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                if (gameState.progress != Playing) {
+                    init();
+                }
+                else {
+                    reveal(tileX, tileY);
+                }
+            }
+            else if (event.button.button == SDL_BUTTON_RIGHT) {
+                flag(tileX, tileY);
+            }
+        }
+        drawBoard(renderer);
+    }
+}
 
 int main(int argCount, char **argValues)
 {
@@ -64,57 +128,19 @@ int main(int argCount, char **argValues)
     constants::SCREEN_WIDTH = displayRect.w;
     constants::SCREEN_HEIGHT = displayRect.h;
     constants::TILE_SIZE = std::min((float) displayRect.h / constants::SIZE_Y, (float) displayRect.w / constants::SIZE_X);
-    
-    SDL_Window * window;
-    SDL_Renderer * renderer;
+
     SDL_CreateWindowAndRenderer("C++Sweeper", displayRect.w, displayRect.h, 0, &window, &renderer);
     SDL_RenderClear(renderer);
     SDL_ShowWindow(window);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-    bool running = true;
-    while (running) {
-        SDL_Event event;
-        if (gameState.remainingMines <= 0) gameState.progress = Win;
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT) {
-                running = false;
-            }
-
-            if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_M) {
-                for (int x = 0; x < constants::SIZE_X; x++) {
-                    for (int y = 0; y < constants::SIZE_Y; y++) {
-                        if (!tiles[x][y].isMine()) revealNoSpread(x, y);
-                    }
-                }
-            }
-            
-            if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
-                init();
-            }
-
-            if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-                int tileX = floor(event.button.x / constants::TILE_SIZE);
-                int tileY = floor(event.button.y / constants::TILE_SIZE);
-                if (outOfBounds(tileX, tileY)) continue;
-                if (event.button.button == SDL_BUTTON_LEFT) {
-                    if (gameState.progress != Playing) {
-                        init();
-                    }
-                    else {
-                        reveal(tileX, tileY);
-                    }
-                }
-                else if (event.button.button == SDL_BUTTON_RIGHT) {
-                    flag(tileX, tileY);
-                }
-            }
-            drawBoard(renderer);
-        }
+    #ifdef __EMSCRIPTEN__
+        emscripten_set_main_loop(mainLoop, 0, 1);
+    #else
+    while (1) {
+        mainLoop();
     }
-
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
-    SDL_Quit();
+    #endif
+    
     return 0;
 }
