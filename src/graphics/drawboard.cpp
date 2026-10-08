@@ -112,7 +112,7 @@ void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_tex
     TTF_SetFontSize(font, (float) SCREEN_WIDTH / 10);
 
     if (gameState.progress == Lose) {
-        SDL_Surface * surface = TTF_RenderText_Blended(font, "You Lose!", 0, {0xFF, 0x00, 0x00, 0xFF});
+        SDL_Surface * surface = TTF_RenderText_Blended(font, "You Lose!", 0, {0xaa, 0x00, 0x00, 0xFF});
         SDL_FRect destination_rect = {
             (float) (constants::SCREEN_WIDTH - surface -> w) / 2.0f,
             (float) (constants::SCREEN_HEIGHT - surface -> h) / 2.0f,
