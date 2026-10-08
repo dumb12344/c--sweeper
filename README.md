@@ -12,14 +12,15 @@ https://www.google.com/fbx?fbx=minesweeper
 ## Building
 Prerequisites:
 
-You will need `libc++`, `sdl3`, `sdl3_image`, `sdl3_ttf`, `cmake`, and either `gcc` or `clang` to build 
+You will need depencencies from for SDL3, which you can find at https://wiki.libsdl.org/SDL3/READMEs for your device. You will also need `cmake`, and either `gcc >= 15` or `clang >= 19` to build
 
-Clone with `git clone https://github.com/dumb12344/c--sweeper.git --depth 1 --recurse-submodules`
+Clone with `git clone https://github.com/dumb12344/c--sweeper.git --depth 1 --recurse-submodules --shallow-submodules`
 
 ### Build steps:
 use `make` or `make test` for dev test, use `make release` or `make dev` to build, outputs in `out/dev_or_release/c++sweeper`
 
 use `make test-clang`, `make release-clang`, or `make dev-clang` to build with clang
+
 ### Web build:
 You need to install `emsdk`, and you may need to change the Makefile for non-unix systems
 

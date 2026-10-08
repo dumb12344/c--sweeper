@@ -91,8 +91,9 @@ void reveal(int x, int y)
 
 void revealNoSpread(int x, int y)
 {
-    gameState.progress = tiles[x][y].reveal();
-    if (tiles[x][y].state == REVEALED_BLANK) gameState.remainingMines --;
+    GameProgress newState = tiles[x][y].reveal();
+    if (gameState.progress == Playing) gameState.progress = newState; 
+    if (tiles[x][y].state == REVEALED_BLANK) gameState.remainingMines--;
 }
 
 void flag(int x, int y)

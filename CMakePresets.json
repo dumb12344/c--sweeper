@@ -4,24 +4,24 @@
         {
             "name": "debug",
             "displayName": "Debug with gcc",
-            "description": "Using compilers: C = /usr/sbin/gcc, CXX = /usr/sbin/g++",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
             "binaryDir": "${sourceDir}/out/${presetName}",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-                "CMAKE_C_COMPILER": "/usr/sbin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/sbin/g++",
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
             "name": "release",
             "displayName": "Release with gcc",
-            "description": "Using compilers: C = /usr/sbin/gcc, CXX = /usr/sbin/g++",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
             "binaryDir": "${sourceDir}/out/${presetName}",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-                "CMAKE_C_COMPILER": "/usr/sbin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/sbin/g++",
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },

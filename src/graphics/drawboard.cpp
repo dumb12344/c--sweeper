@@ -140,11 +140,11 @@ void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_tex
     }
 }
 
-static const unsigned char imageData[] = {
+static const uint8_t imageData[] = {
     #embed "../../assets/flag_icon.png"
 };
 
-static const unsigned char fontData[] = {
+static const uint8_t fontData[] = {
     #embed "../../assets/google_sans.otf"
 };
 
