@@ -26,6 +26,8 @@ int constants::SCREEN_HEIGHT = 50;
 int constants::SIZE_X = 10;
 int constants::SIZE_Y = 8;
 int constants::MINE_COUNT = 10;
+int constants::OFFSET_X = 0;
+int constants::OFFSET_Y = 0;
 // const int SIZE_X = 10;
 // const int SIZE_Y = 8;
 // const int MINE_COUNT = 10;
@@ -78,8 +80,8 @@ static void mainLoop()
         }
 
         if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-            int tileX = floor(event.button.x / constants::TILE_SIZE);
-            int tileY = floor(event.button.y / constants::TILE_SIZE);
+            int tileX = floor((event.button.x - constants::OFFSET_X) / constants::TILE_SIZE);
+            int tileY = floor((event.button.y - constants::OFFSET_Y) / constants::TILE_SIZE);
             if (outOfBounds(tileX, tileY)) continue;
             if (event.button.button == SDL_BUTTON_LEFT) {
                 if (gameState.progress != Playing) {
@@ -128,6 +130,9 @@ int main(int argCount, char **argValues)
     constants::SCREEN_WIDTH = displayRect.w;
     constants::SCREEN_HEIGHT = displayRect.h;
     constants::TILE_SIZE = std::min((float) displayRect.h / constants::SIZE_Y, (float) displayRect.w / constants::SIZE_X);
+
+    constants::OFFSET_X = (constants::SCREEN_WIDTH - constants::SIZE_X * constants::TILE_SIZE) / 2;
+    constants::OFFSET_Y = (constants::SCREEN_HEIGHT - constants::SIZE_Y * constants::TILE_SIZE) / 2;
 
     SDL_CreateWindowAndRenderer("C++Sweeper", displayRect.w, displayRect.h, 0, &window, &renderer);
     SDL_RenderClear(renderer);

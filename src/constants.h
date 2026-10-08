@@ -9,6 +9,8 @@ namespace constants {
     extern float TILE_SIZE;
     extern int SCREEN_WIDTH;
     extern int SCREEN_HEIGHT;
+    extern int OFFSET_X;
+    extern int OFFSET_Y;
     const Uint32 NUMBER_COLORS[] = {
         0xffffff,
         0x1976d2,

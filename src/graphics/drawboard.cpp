@@ -24,7 +24,7 @@ void drawRevealed(SDL_Renderer * renderer)
             if (!tile.isRevealed()) continue;
             SDL_Color color = tile.getColor();
             SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-            SDL_FRect tileRect = {(float) x * TILE_SIZE, (float) y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+            SDL_FRect tileRect = {(float) x * TILE_SIZE + OFFSET_X, (float) y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
             SDL_RenderFillRect(renderer, &tileRect);
         }
     }
@@ -39,8 +39,8 @@ void drawOutline(SDL_Renderer * renderer)
             SDL_Color color = colorHex(0x87af3a);
             SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
             SDL_FRect tileRect = {
-                (float) x * TILE_SIZE - (float) TILE_SIZE / 15,
-                (float) y * TILE_SIZE - (float) TILE_SIZE / 15,
+                (float) x * TILE_SIZE - (float) TILE_SIZE / 15 + OFFSET_X,
+                (float) y * TILE_SIZE - (float) TILE_SIZE / 15 + OFFSET_Y,
                 (TILE_SIZE + TILE_SIZE / 7.5f),
                 (TILE_SIZE + TILE_SIZE / 7.5f)
             };
@@ -57,7 +57,7 @@ void drawUnrevealed(SDL_Renderer * renderer)
             if (tile.isRevealed()) continue;
             SDL_Color color = tile.getColor();
             SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-            SDL_FRect tileRect = {(float) x * TILE_SIZE, (float) y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+            SDL_FRect tileRect = {(float) x * TILE_SIZE + OFFSET_X, (float) y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
             SDL_RenderFillRect(renderer, &tileRect);
         }
     }
@@ -67,6 +67,8 @@ void drawSelected(SDL_Renderer * renderer, bool underOutline)
 {
     float mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
+    mouseX -= OFFSET_X;
+    mouseY -= OFFSET_Y;
     int mouseTileX = mouseX / TILE_SIZE;
     int mouseTileY = mouseY / TILE_SIZE;
     if (outOfBounds(mouseTileX, mouseTileY)) return;
@@ -75,7 +77,7 @@ void drawSelected(SDL_Renderer * renderer, bool underOutline)
     else if (!underOutline && tile.isRevealed()) return;
     if (tile.surroundingMines > 0 || !tile.isRevealed()) {
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF * 0.2);
-        SDL_FRect tileRect = {(float) mouseTileX * TILE_SIZE, (float) mouseTileY * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+        SDL_FRect tileRect = {(float) mouseTileX * TILE_SIZE + OFFSET_X, (float) mouseTileY * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
         SDL_RenderFillRect(renderer, &tileRect);
     }
 }
@@ -85,7 +87,7 @@ void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_tex
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
             Tile tile = tiles[x][y];
-            SDL_FRect destination_rect = {(float) x * TILE_SIZE, (float) y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+            SDL_FRect destination_rect = {(float) x * TILE_SIZE + OFFSET_X, (float) y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
             if (tile.isFlagged()) {
                 SDL_RenderTexture(renderer, flag_texture, NULL, &destination_rect);
             }
@@ -94,8 +96,8 @@ void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_tex
         ) {
                 SDL_Surface * surface = TTF_RenderText_Blended(font, std::to_string(tile.surroundingMines).c_str(), 0, colorHex(NUMBER_COLORS[tiles[x][y].surroundingMines]));
                 destination_rect = {
-                    (float) x * TILE_SIZE + (TILE_SIZE - surface -> w) / 2.0f,
-                    (float) y * TILE_SIZE + (TILE_SIZE - surface -> h) / 2.0f,
+                    (float) x * TILE_SIZE + (TILE_SIZE - surface -> w) / 2.0f + OFFSET_X,
+                    (float) y * TILE_SIZE + (TILE_SIZE - surface -> h) / 2.0f + OFFSET_Y,
                     (float) surface -> w,
                     (float) surface -> h
                 };
