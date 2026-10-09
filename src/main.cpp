@@ -1,3 +1,4 @@
+#include "graphics/cache.h"
 #include "graphics/drawboard.h"
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_events.h>
@@ -15,6 +16,7 @@
 #include <SDL3_image/SDL_image.h>
 #include "gamemanager.h"
 #include "constants.h"
+#include "tiles.h"
 #include <unistd.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -46,6 +48,7 @@ static SDL_Renderer * renderer;
 static void mainLoop()
 {
     if (!running) {
+        cache::destroyCache(renderer);
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
         SDL_Quit();
@@ -69,6 +72,15 @@ static void mainLoop()
                     if (!tiles[x][y].isMine()) revealNoSpread(x, y);
                 }
             }
+        }
+
+        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_Y) {
+            for (int x = 0; x < constants::SIZE_X; x++) {
+                for (int y = 0; y < constants::SIZE_Y; y++) {
+                    if (tiles[x][y].state == TileState::REVEALED_MINE) tiles[x][y].state = TileState::HIDDEN_MINE;
+                }
+            }
+            gameState.progress = GameProgress::Playing;
         }
         
         if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
@@ -138,6 +150,8 @@ int main(int argCount, char **argValues)
     SDL_RenderClear(renderer);
     SDL_ShowWindow(window);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+    cache::initCache(renderer);
 
     #ifdef __EMSCRIPTEN__
         emscripten_set_main_loop(mainLoop, 0, 1);

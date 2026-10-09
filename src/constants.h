@@ -20,6 +20,7 @@ namespace constants {
         0xff8f00,
         0x0097a7,
         0x424242,
-        0x9e9e9e
+        0x9e9e9e,
+        0x000000
     };
 }

@@ -24,6 +24,8 @@ add_executable(
     src/tiles.h
     src/gamemanager.cpp
     src/gamemanager.h
+    src/graphics/cache.cpp
+    src/graphics/cache.h
 )
 
 target_compile_options(c++sweeper PRIVATE $<$<CXX_COMPILER_ID:Clang>:-Wno-c23-extensions>)
