@@ -3,9 +3,10 @@
 #include <SDL3_image/SDL_image.h>
 #include <string>
 #include "../constants.h"
+#include <stdlib.h>
 
 namespace cache {
-    SDL_Texture * numberCache[10];
+    SDL_Texture * number_textures[10];
     TTF_Font * font;
     SDL_Texture * flag_texture;
 
@@ -31,7 +32,7 @@ namespace cache {
         }
         for (int i = 0; i <= 9; i++) {
             SDL_Surface * surface = TTF_RenderText_Blended(font, std::to_string(i).c_str(), 0, colorHex(constants::NUMBER_COLORS[i]));
-            numberCache[i] = SDL_CreateTextureFromSurface(renderer, surface);
+            number_textures[i] = SDL_CreateTextureFromSurface(renderer, surface);
             SDL_DestroySurface(surface);
         }
     }
@@ -39,7 +40,7 @@ namespace cache {
     void destroyCache(SDL_Renderer * renderer)
     {
         for (int i = 0; i <= 9; i++) {
-            SDL_DestroyTexture(numberCache[i]);
+            SDL_DestroyTexture(number_textures[i]);
         }
         TTF_CloseFont(cache::font);
         SDL_DestroyTexture(cache::flag_texture);

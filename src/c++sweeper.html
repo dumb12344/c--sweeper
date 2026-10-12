@@ -79,7 +79,7 @@ canvas.emscripten { border: 0px none; background-color: black; }
 
 #controls {
   display: inline-block;
-  float: right;
+  /* float: right; */
   vertical-align: top;
   margin-top: 30px;
   margin-right: 20px;
@@ -185,7 +185,8 @@ canvas.emscripten { border: 0px none; background-color: black; }
         monitorRunDependencies(left) {
           this.totalDependencies = Math.max(this.totalDependencies, left);
           setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-        }
+        },
+        arguments: ["-x " + prompt("Input board width: ", 10), "-y " + prompt("Input board height: ", 8), "-c " + prompt("Input mine count: ", 10)]
       };
       setStatus('Downloading...');
       window.onerror = window.onunhandledrejection = () => {

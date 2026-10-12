@@ -3,7 +3,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 namespace cache {
-    extern SDL_Texture * numberCache[10];
+    extern SDL_Texture * number_textures[10];
     extern TTF_Font * font;
     extern SDL_Texture * flag_texture;
 

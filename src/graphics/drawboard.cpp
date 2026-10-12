@@ -18,7 +18,7 @@
 
 using namespace constants;
 
-void drawRevealed(SDL_Renderer * renderer)
+static void drawRevealed(SDL_Renderer * renderer)
 {
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
@@ -32,7 +32,7 @@ void drawRevealed(SDL_Renderer * renderer)
     }
 }
 
-void drawOutline(SDL_Renderer * renderer)
+static void drawOutline(SDL_Renderer * renderer)
 {
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
@@ -51,7 +51,7 @@ void drawOutline(SDL_Renderer * renderer)
     }
 }
 
-void drawUnrevealed(SDL_Renderer * renderer)
+static void drawUnrevealed(SDL_Renderer * renderer)
 {
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
@@ -65,7 +65,7 @@ void drawUnrevealed(SDL_Renderer * renderer)
     }
 }
 
-void drawSelected(SDL_Renderer * renderer, bool underOutline)
+static void drawSelected(SDL_Renderer * renderer, bool underOutline)
 {
     float mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
@@ -84,7 +84,7 @@ void drawSelected(SDL_Renderer * renderer, bool underOutline)
     }
 }
 
-void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_texture)
+static void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_texture)
 {
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
@@ -96,7 +96,7 @@ void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_tex
 
             if (tile.surroundingMines > 0 && tile.isRevealed() && !tile.isMine()
         ) {
-                SDL_Texture * texture = cache::numberCache[tile.surroundingMines];
+                SDL_Texture * texture = cache::number_textures[tile.surroundingMines];
                 destination_rect = {
                     (float) x * TILE_SIZE + (TILE_SIZE - texture -> w) / 2.0f + OFFSET_X,
                     (float) y * TILE_SIZE + (TILE_SIZE - texture -> h) / 2.0f + OFFSET_Y,
