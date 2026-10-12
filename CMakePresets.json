@@ -22,7 +22,12 @@
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
                 "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "BUILD_SHARED_LIBS": false,
+                "SDL_SHARED": false,
+                "SDL_STATIC": true,
+                "SDL_IMAGE_SHARED": false,
+                "SDL_IMAGE_STATIC": true
             }
         },
         {
@@ -46,7 +51,12 @@
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
                 "CMAKE_C_COMPILER": "/usr/bin/clang",
                 "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "BUILD_SHARED_LIBS": false,
+                "SDL_SHARED": false,
+                "SDL_STATIC": true,
+                "SDL_IMAGE_SHARED": false,
+                "SDL_IMAGE_STATIC": true
             }
         }
     ]
