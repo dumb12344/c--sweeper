@@ -65,12 +65,8 @@ static void drawUnrevealed(SDL_Renderer * renderer)
     }
 }
 
-static void drawSelected(SDL_Renderer * renderer, bool underOutline)
+static void drawSelected(SDL_Renderer * renderer, bool underOutline, float mouseX, float mouseY)
 {
-    float mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-    mouseX -= OFFSET_X;
-    mouseY -= OFFSET_Y;
     int mouseTileX = mouseX / TILE_SIZE;
     int mouseTileY = mouseY / TILE_SIZE;
     if (outOfBounds(mouseTileX, mouseTileY)) return;
@@ -84,14 +80,14 @@ static void drawSelected(SDL_Renderer * renderer, bool underOutline)
     }
 }
 
-static void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * flag_texture)
+static void drawExtras(SDL_Renderer * renderer)
 {
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
             Tile& tile = tiles[x][y];
             SDL_FRect destination_rect = {(float) x * TILE_SIZE + OFFSET_X, (float) y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
             if (tile.isFlagged()) {
-                SDL_RenderTexture(renderer, flag_texture, NULL, &destination_rect);
+                SDL_RenderTexture(renderer, cache::flag_texture, NULL, &destination_rect);
             }
 
             if (tile.surroundingMines > 0 && tile.isRevealed() && !tile.isMine()
@@ -109,9 +105,9 @@ static void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * f
     }
 
     if (gameState.progress == Lose || gameState.progress == Win) {
-        TTF_SetFontSize(font, (float) SCREEN_WIDTH / 10);
+        TTF_SetFontSize(cache::font, (float) SCREEN_WIDTH / 10);
         SDL_Surface * surface = TTF_RenderText_Blended(
-            font,
+            cache::font,
             gameState.progress == Lose ? "You Lose!" : "You Win!",
             0,
             gameState.progress == Lose ? SDL_Color{0xaa, 0x00, 0x00, 0xFF} : SDL_Color{0x88, 0x55, 0x00, 0xFF}
@@ -126,7 +122,7 @@ static void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * f
         SDL_DestroySurface(surface);
         SDL_RenderTexture(renderer, texture, NULL, &destination_rect);
         SDL_DestroyTexture(texture);
-        TTF_SetFontSize(font, TILE_SIZE);
+        TTF_SetFontSize(cache::font, TILE_SIZE);
     }
 }
 
@@ -135,12 +131,17 @@ void drawBoard(SDL_Renderer * renderer)
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
 
+    float mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    mouseX -= OFFSET_X;
+    mouseY -= OFFSET_Y;
+
     drawRevealed(renderer);
-    drawSelected(renderer, true);
+    drawSelected(renderer, true, mouseX, mouseY);
     drawOutline(renderer);
     drawUnrevealed(renderer);
-    drawSelected(renderer, false);
-    drawExtras(renderer, cache::font, cache::flag_texture);
+    drawSelected(renderer, false, mouseX, mouseY);
+    drawExtras(renderer);
 
     SDL_RenderPresent(renderer);
 }

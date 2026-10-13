@@ -1,14 +1,14 @@
-test: dev
-	./out/debug/c++sweeper
+test: debug
+	./out/debug/c++sweeper # -x 192 -y 108 -c 300
 
-test-clang: dev-clang
+test-clang: debug-clang
 	./out/debug-clang/c++sweeper
 
-dev:
+debug:
 	cmake --preset debug
 	cmake --build out/debug --target c++sweeper
 
-dev-clang:
+debug-clang:
 	cmake --preset debug-clang
 	cmake --build out/debug-clang --target c++sweeper
 
