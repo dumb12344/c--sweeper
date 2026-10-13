@@ -111,7 +111,7 @@ static void drawExtras(SDL_Renderer * renderer, TTF_Font * font, SDL_Texture * f
     if (gameState.progress == Lose || gameState.progress == Win) {
         TTF_SetFontSize(font, (float) SCREEN_WIDTH / 10);
         SDL_Surface * surface = TTF_RenderText_Blended(
-            font, 
+            font,
             gameState.progress == Lose ? "You Lose!" : "You Win!",
             0,
             gameState.progress == Lose ? SDL_Color{0xaa, 0x00, 0x00, 0xFF} : SDL_Color{0x88, 0x55, 0x00, 0xFF}
@@ -134,7 +134,7 @@ void drawBoard(SDL_Renderer * renderer)
 {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
-    
+
     drawRevealed(renderer);
     drawSelected(renderer, true);
     drawOutline(renderer);

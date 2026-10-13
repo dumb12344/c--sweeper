@@ -36,7 +36,7 @@ namespace cache {
             SDL_DestroySurface(surface);
         }
     }
-    
+
     void destroyCache(SDL_Renderer * renderer)
     {
         for (int i = 0; i <= 9; i++) {

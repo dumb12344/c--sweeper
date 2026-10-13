@@ -11,7 +11,7 @@ enum TileState {
     REVEALED_BLANK
 };
 
-enum GameProgress : int; 
+enum GameProgress : int;
 
 struct Tile {
     TileState state;

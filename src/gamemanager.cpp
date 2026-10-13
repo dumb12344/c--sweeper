@@ -92,7 +92,7 @@ void reveal(int x, int y)
 void revealNoSpread(int x, int y)
 {
     GameProgress newState = tiles[x][y].reveal();
-    if (gameState.progress == Playing) gameState.progress = newState; 
+    if (gameState.progress == Playing) gameState.progress = newState;
     if (tiles[x][y].state == REVEALED_BLANK) gameState.remainingMines--;
 }
 

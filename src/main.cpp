@@ -82,7 +82,7 @@ static void mainLoop()
             }
             gameState.progress = GameProgress::Playing;
         }
-        
+
         if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
             init();
         }
@@ -132,7 +132,7 @@ int main(int argCount, char **argValues)
             }
         }
     }
-    
+
     init();
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
@@ -160,6 +160,6 @@ int main(int argCount, char **argValues)
         mainLoop();
     }
     #endif
-    
+
     return 0;
 }
