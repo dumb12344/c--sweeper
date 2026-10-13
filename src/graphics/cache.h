@@ -6,6 +6,8 @@ namespace cache {
     extern SDL_Texture * number_textures[10];
     extern TTF_Font * font;
     extern SDL_Texture * flag_texture;
+    extern SDL_Texture * lose_text;
+    extern SDL_Texture * win_text;
 
     void initCache(SDL_Renderer * renderer);
     void destroyCache(SDL_Renderer * renderer);

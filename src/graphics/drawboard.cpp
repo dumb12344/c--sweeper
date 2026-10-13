@@ -85,15 +85,14 @@ static void drawExtras(SDL_Renderer * renderer)
     for (int x = 0; x < SIZE_X; x++) {
         for (int y = 0; y < SIZE_Y; y++) {
             Tile& tile = tiles[x][y];
-            SDL_FRect destination_rect = {(float) x * TILE_SIZE + OFFSET_X, (float) y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
             if (tile.isFlagged()) {
+                SDL_FRect destination_rect = {(float) x * TILE_SIZE + OFFSET_X, (float) y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
                 SDL_RenderTexture(renderer, cache::flag_texture, NULL, &destination_rect);
             }
 
-            if (tile.surroundingMines > 0 && tile.isRevealed() && !tile.isMine()
-        ) {
+            if (tile.surroundingMines > 0 && tile.isRevealed() && !tile.isMine()) {
                 SDL_Texture * texture = cache::number_textures[tile.surroundingMines];
-                destination_rect = {
+                SDL_FRect destination_rect = {
                     (float) x * TILE_SIZE + (TILE_SIZE - texture -> w) / 2.0f + OFFSET_X,
                     (float) y * TILE_SIZE + (TILE_SIZE - texture -> h) / 2.0f + OFFSET_Y,
                     (float) texture -> w,
@@ -105,24 +104,14 @@ static void drawExtras(SDL_Renderer * renderer)
     }
 
     if (gameState.progress == Lose || gameState.progress == Win) {
-        TTF_SetFontSize(cache::font, (float) SCREEN_WIDTH / 10);
-        SDL_Surface * surface = TTF_RenderText_Blended(
-            cache::font,
-            gameState.progress == Lose ? "You Lose!" : "You Win!",
-            0,
-            gameState.progress == Lose ? SDL_Color{0xaa, 0x00, 0x00, 0xFF} : SDL_Color{0x88, 0x55, 0x00, 0xFF}
-        );
+        SDL_Texture * texture = gameState.progress == Lose ? cache::lose_text : cache::win_text;
         SDL_FRect destination_rect = {
-            (float) (constants::SCREEN_WIDTH - surface -> w) / 2.0f,
-            (float) (constants::SCREEN_HEIGHT - surface -> h) / 2.0f,
-            (float) surface -> w,
-            (float) surface -> h
+            (float) (constants::SCREEN_WIDTH - texture -> w) / 2.0f,
+            (float) (constants::SCREEN_HEIGHT - texture -> h) / 2.0f,
+            (float) texture -> w,
+            (float) texture -> h
         };
-        SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surface);
-        SDL_DestroySurface(surface);
         SDL_RenderTexture(renderer, texture, NULL, &destination_rect);
-        SDL_DestroyTexture(texture);
-        TTF_SetFontSize(cache::font, TILE_SIZE);
     }
 }
 
