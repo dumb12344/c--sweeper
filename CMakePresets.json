@@ -25,9 +25,7 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "BUILD_SHARED_LIBS": false,
                 "SDL_SHARED": false,
-                "SDL_STATIC": true,
-                "SDL_IMAGE_SHARED": false,
-                "SDL_IMAGE_STATIC": true
+                "SDL_STATIC": true
             }
         },
         {
@@ -54,9 +52,7 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "BUILD_SHARED_LIBS": false,
                 "SDL_SHARED": false,
-                "SDL_STATIC": true,
-                "SDL_IMAGE_SHARED": false,
-                "SDL_IMAGE_STATIC": true
+                "SDL_STATIC": true
             }
         }
     ]
