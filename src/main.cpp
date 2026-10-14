@@ -60,11 +60,22 @@ static void mainLoop()
     }
 
     SDL_Event event;
-    if (gameState.remainingMines <= 0) gameState.progress = Win;
+    #ifdef __EMSCRIPTEN__
     while (SDL_PollEvent(&event)) {
+    #else
+    while (SDL_WaitEvent(&event)) {
+    #endif
         if (event.type == SDL_EVENT_QUIT) {
             running = false;
+            return;
         }
+
+        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_Q) {
+            running = false;
+            return;
+        }
+
+        if (gameState.remainingMines <= 0) gameState.progress = Win;
 
         if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_M) {
             for (int x = 0; x < constants::SIZE_X; x++) {
@@ -85,10 +96,6 @@ static void mainLoop()
 
         if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
             init();
-        }
-
-        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_Q) {
-            running = false;
         }
 
         if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {

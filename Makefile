@@ -1,5 +1,5 @@
 test: debug
-	./out/debug/c++sweeper # -x 192 -y 108 -c 300
+	./out/debug/c++sweeper # -x 384 -y 216 -c 1000
 
 test-clang: debug-clang
 	./out/debug-clang/c++sweeper

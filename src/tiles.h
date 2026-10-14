@@ -17,10 +17,10 @@ struct Tile {
     TileState state;
     int surroundingMines;
     bool altColor;
-    SDL_Color getColor ();
-    GameProgress reveal ();
-    void flag ();
-    bool isMine ();
-    bool isFlagged ();
-    bool isRevealed ();
+    SDL_Color getColor();
+    GameProgress reveal();
+    void flag();
+    bool isMine();
+    bool isFlagged();
+    bool isRevealed();
 };
