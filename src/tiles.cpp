@@ -31,16 +31,21 @@ SDL_Color Tile::getColor()
 
 GameProgress Tile::reveal()
 {
-    TileState newstates[6] = {REVEALED_MINE, REVEALED_BLANK, FLAGGED_MINE, FLAGGED_BLANK, REVEALED_MINE, REVEALED_BLANK};
-    state = newstates[state];
+    TileState newStates[6] = {REVEALED_MINE, REVEALED_BLANK, FLAGGED_MINE, FLAGGED_BLANK, REVEALED_MINE, REVEALED_BLANK};
+    state = newStates[state];
     if (state == REVEALED_MINE) return Lose;
     else return Playing;
 }
 
 void Tile::flag()
 {
-    TileState newstates[6] = {FLAGGED_MINE, FLAGGED_BLANK, HIDDEN_MINE, HIDDEN_BLANK, REVEALED_MINE, REVEALED_BLANK};
-    state = newstates[state];
+    TileState newStates[6] = {FLAGGED_MINE, FLAGGED_BLANK, HIDDEN_MINE, HIDDEN_BLANK, REVEALED_MINE, REVEALED_BLANK};
+    state = newStates[state];
+}
+
+void Tile::toggleRevealed() {
+    TileState newStates[6] = {REVEALED_MINE, REVEALED_BLANK, HIDDEN_MINE, HIDDEN_BLANK, HIDDEN_MINE, HIDDEN_BLANK};
+    state = newStates[state];
 }
 
 bool Tile::isFlagged()

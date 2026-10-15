@@ -20,6 +20,7 @@ struct Tile {
     SDL_Color getColor();
     GameProgress reveal();
     void flag();
+    void toggleRevealed();
     bool isMine();
     bool isFlagged();
     bool isRevealed();

@@ -41,10 +41,10 @@ static void initMines()
             remainingMines--;
         }
     }
-    GameState::getInstance().remainingMines = constants::SIZE_X * constants::SIZE_Y - constants::MINE_COUNT;
+    GameState::getInstance().remainingTiles = constants::SIZE_X * constants::SIZE_Y - constants::MINE_COUNT;
 }
 
-static void initSurroundingMines()
+void initSurroundingMines()
 {
     for (int x = 0; x < constants::SIZE_X; x++) {
         for (int y = 0; y < constants::SIZE_Y; y++) {
@@ -95,9 +95,9 @@ void reveal(int x, int y)
 
 void revealNoSpread(int x, int y)
 {
+    if (tiles[x][y].state == HIDDEN_BLANK) GameState::getInstance().remainingTiles--;
     GameProgress newState = tiles[x][y].reveal();
     if (GameState::getInstance().progress == Playing) GameState::getInstance().progress = newState;
-    if (tiles[x][y].state == REVEALED_BLANK) GameState::getInstance().remainingMines--;
 }
 
 void flag(int x, int y)

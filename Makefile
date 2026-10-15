@@ -20,11 +20,14 @@ release-clang:
 	cmake --preset release-clang
 	cmake --build out/release-clang --target c++sweeper
 
-release-emscripten:
+release-web:
 	mkdir out/emscripten -p
 	cd out/emscripten && /usr/lib/emscripten/emcmake cmake ../..
 	cd out/emscripten && cmake --build . --target c++sweeper
 	cp src/c++sweeper.html out/emscripten/c++sweeper.html
+
+test-web: release-web
+	cd out/emscripten && python3 -m http.server 8080
 
 clean:
 	rm -rf out

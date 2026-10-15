@@ -24,4 +24,4 @@ use `make test-clang`, `make release-clang`, or `make dev-clang` to build with c
 ### Web build:
 You need to install `emsdk`, and you may need to change the Makefile for non-unix systems
 
-use `make release-emscripten` to build web release, outputs in `out/emscripten/c++sweeper.[html, js, wasm]`
+use `make release-web` to build web release, outputs in `out/emscripten/c++sweeper.[html, js, wasm]`

@@ -62,6 +62,7 @@ static void mainLoop()
     }
 
     SDL_Event event;
+    bool shift;
     #ifdef __EMSCRIPTEN__
     while (SDL_PollEvent(&event)) {
     #else
@@ -77,7 +78,7 @@ static void mainLoop()
             return;
         }
 
-        if (GameState::getInstance().remainingMines <= 0) GameState::getInstance().progress = Win;
+        GameState::getInstance().progress = GameState::getInstance().remainingTiles <= 0 ? Win : GameState::getInstance().progress;
 
         if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_M) {
             for (int x = 0; x < constants::SIZE_X; x++) {
@@ -100,20 +101,41 @@ static void mainLoop()
             init();
         }
 
+        if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
+            shift = event.key.mod & SDL_KMOD_LSHIFT;
+        }
+
         if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
             int tileX = floor((event.button.x - constants::OFFSET_X) / constants::TILE_SIZE);
             int tileY = floor((event.button.y - constants::OFFSET_Y) / constants::TILE_SIZE);
             if (outOfBounds(tileX, tileY)) continue;
             if (event.button.button == SDL_BUTTON_LEFT) {
-                if (GameState::getInstance().progress != Playing) {
-                    init();
+                if (shift) {
+                    Tile& tile = tiles[tileX][tileY];
+                    GameState::getInstance().remainingTiles += tile.isMine() ? -1 : 1;
+                    TileState newStates[6] = {HIDDEN_BLANK,HIDDEN_MINE,FLAGGED_BLANK,FLAGGED_MINE,REVEALED_BLANK,REVEALED_MINE};
+                    tile.state = newStates[tile.state];
+                    initSurroundingMines();
+                    GameState::getInstance().progress = GameState::getInstance().remainingTiles <= 0 ? Win : Playing;
                 }
                 else {
-                    reveal(tileX, tileY);
+                    if (GameState::getInstance().progress != Playing) {
+                        init();
+                    }
+                    else {
+                        reveal(tileX, tileY);
+                    }
                 }
             }
             else if (event.button.button == SDL_BUTTON_RIGHT) {
-                flag(tileX, tileY);
+                if (shift) {
+                    tiles[tileX][tileY].toggleRevealed();
+                    GameState::getInstance().remainingTiles += tiles[tileX][tileY].isRevealed() ? -1 : 1;
+                    SDL_Log("%d", GameState::getInstance().remainingTiles);
+                }
+                else {
+                    flag(tileX, tileY);
+                }
             }
         }
         drawBoard(renderer);
