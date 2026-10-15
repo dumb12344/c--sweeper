@@ -22,23 +22,25 @@
 #include <emscripten.h>
 #endif
 
-float constants::TILE_SIZE = 50;
-int constants::SCREEN_WIDTH = 50;
-int constants::SCREEN_HEIGHT = 50;
-int constants::SIZE_X = 10;
-int constants::SIZE_Y = 8;
-int constants::MINE_COUNT = 10;
-int constants::OFFSET_X = 0;
-int constants::OFFSET_Y = 0;
-// const int SIZE_X = 10;
-// const int SIZE_Y = 8;
-// const int MINE_COUNT = 10;
-// const int SIZE_X = 18;
-// const int SIZE_Y = 14;
-// const int MINE_COUNT = 40;
-// const int SIZE_X = 24;
-// const int SIZE_Y = 20;
-// const int MINE_COUNT = 99;
+namespace constants {
+    float TILE_SIZE = 50;
+    int SCREEN_WIDTH = 50;
+    int SCREEN_HEIGHT = 50;
+    int OFFSET_X = 0;
+    int OFFSET_Y = 0;
+    int SIZE_X = 10;
+    int SIZE_Y = 8;
+    int MINE_COUNT = 10;
+    // int SIZE_X = 10;
+    // int SIZE_Y = 8;
+    // int MINE_COUNT = 10;
+    // int SIZE_X = 18;
+    // int SIZE_Y = 14;
+    // int MINE_COUNT = 40;
+    // int SIZE_X = 24;
+    // int SIZE_Y = 20;
+    // int MINE_COUNT = 99;
+}
 
 static bool running = true;
 
@@ -75,7 +77,7 @@ static void mainLoop()
             return;
         }
 
-        if (gameState.remainingMines <= 0) gameState.progress = Win;
+        if (GameState::getInstance().remainingMines <= 0) GameState::getInstance().progress = Win;
 
         if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_M) {
             for (int x = 0; x < constants::SIZE_X; x++) {
@@ -91,7 +93,7 @@ static void mainLoop()
                     if (tiles[x][y].state == TileState::REVEALED_MINE) tiles[x][y].state = TileState::HIDDEN_MINE;
                 }
             }
-            gameState.progress = GameProgress::Playing;
+            GameState::getInstance().progress = GameProgress::Playing;
         }
 
         if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
@@ -103,7 +105,7 @@ static void mainLoop()
             int tileY = floor((event.button.y - constants::OFFSET_Y) / constants::TILE_SIZE);
             if (outOfBounds(tileX, tileY)) continue;
             if (event.button.button == SDL_BUTTON_LEFT) {
-                if (gameState.progress != Playing) {
+                if (GameState::getInstance().progress != Playing) {
                     init();
                 }
                 else {
@@ -135,7 +137,7 @@ int main(int argCount, char **argValues)
                 break;
             default:
                 SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Usage: %s [-x xsize] [-y ysize] [-c minecount]\n", argValues[0]);
-                return 1;
+                exit(1);
             }
         }
     }

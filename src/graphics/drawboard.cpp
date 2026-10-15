@@ -103,8 +103,8 @@ static void drawExtras(SDL_Renderer * renderer)
         }
     }
 
-    if (gameState.progress == Lose || gameState.progress == Win) {
-        SDL_Texture * texture = gameState.progress == Lose ? cache::lose_text : cache::win_text;
+    if (GameState::getInstance().progress == Lose || GameState::getInstance().progress == Win) {
+        SDL_Texture * texture = GameState::getInstance().progress == Lose ? cache::lose_text : cache::win_text;
         SDL_FRect destination_rect = {
             (float) (constants::SCREEN_WIDTH - texture -> w) / 2.0f,
             (float) (constants::SCREEN_HEIGHT - texture -> h) / 2.0f,

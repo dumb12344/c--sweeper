@@ -12,9 +12,9 @@ enum GameProgress : int {
 struct GameState {
     GameProgress progress = Initializing;
     int remainingMines = 0;
+    static GameState& getInstance();
 };
 
-extern GameState gameState;
 bool outOfBounds(int x, int y);
 void init();
 void reveal(int x, int y);

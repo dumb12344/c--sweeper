@@ -6,7 +6,11 @@
 #include "tiles.h"
 
 std::vector<std::vector<Tile>> tiles;
-GameState gameState;
+
+GameState& GameState::getInstance() {
+    static GameState instance;
+    return instance;
+}
 
 bool outOfBounds(int x, int y)
 {
@@ -37,7 +41,7 @@ static void initMines()
             remainingMines--;
         }
     }
-    gameState.remainingMines = constants::SIZE_X * constants::SIZE_Y - constants::MINE_COUNT;
+    GameState::getInstance().remainingMines = constants::SIZE_X * constants::SIZE_Y - constants::MINE_COUNT;
 }
 
 static void initSurroundingMines()
@@ -58,16 +62,16 @@ static void initSurroundingMines()
 
 void init()
 {
-    gameState.progress = Initializing;
+    GameState::getInstance().progress = Initializing;
     initTiles();
     initMines();
     initSurroundingMines();
-    gameState.progress = Playing;
+    GameState::getInstance().progress = Playing;
 }
 
 void reveal(int x, int y)
 {
-    if (gameState.progress != Playing) return;
+    if (GameState::getInstance().progress != Playing) return;
     if (tiles[x][y].isRevealed()) return;
     revealNoSpread(x, y);
     if (tiles[x][y].surroundingMines == 0) {
@@ -79,7 +83,7 @@ void reveal(int x, int y)
             }
         }
     }
-    if (gameState.progress == Lose) {
+    if (GameState::getInstance().progress == Lose) {
         for (int revealX = 0; revealX < constants::SIZE_X; revealX++) {
             for (int revealY = 0; revealY < constants::SIZE_Y; revealY++) {
                 if (revealX == x && revealY == y) continue;
@@ -92,12 +96,12 @@ void reveal(int x, int y)
 void revealNoSpread(int x, int y)
 {
     GameProgress newState = tiles[x][y].reveal();
-    if (gameState.progress == Playing) gameState.progress = newState;
-    if (tiles[x][y].state == REVEALED_BLANK) gameState.remainingMines--;
+    if (GameState::getInstance().progress == Playing) GameState::getInstance().progress = newState;
+    if (tiles[x][y].state == REVEALED_BLANK) GameState::getInstance().remainingMines--;
 }
 
 void flag(int x, int y)
 {
-    if (gameState.progress != Playing) return;
+    if (GameState::getInstance().progress != Playing) return;
     tiles[x][y].flag();
 }
