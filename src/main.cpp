@@ -112,9 +112,10 @@ static void mainLoop()
             if (event.button.button == SDL_BUTTON_LEFT) {
                 if (shift) {
                     Tile& tile = tiles[tileX][tileY];
-                    GameState::getInstance().remainingTiles += tile.isMine() ? -1 : 1;
-                    TileState newStates[6] = {HIDDEN_BLANK,HIDDEN_MINE,FLAGGED_BLANK,FLAGGED_MINE,REVEALED_BLANK,REVEALED_MINE};
-                    tile.state = newStates[tile.state];
+                    if (!tile.isRevealed()) {
+                        GameState::getInstance().remainingTiles += tile.isMine() ? 1 : -1;
+                    }
+                    tile.toggleMine();
                     initSurroundingMines();
                     GameState::getInstance().progress = GameState::getInstance().remainingTiles <= 0 ? Win : Playing;
                 }
@@ -130,8 +131,10 @@ static void mainLoop()
             else if (event.button.button == SDL_BUTTON_RIGHT) {
                 if (shift) {
                     tiles[tileX][tileY].toggleRevealed();
-                    GameState::getInstance().remainingTiles += tiles[tileX][tileY].isRevealed() ? -1 : 1;
-                    SDL_Log("%d", GameState::getInstance().remainingTiles);
+                    if (!tiles[tileX][tileY].isMine()) {
+                        GameState::getInstance().remainingTiles += tiles[tileX][tileY].isRevealed() ? -1 : 1;
+                    }
+                    GameState::getInstance().progress = GameState::getInstance().remainingTiles <= 0 ? Win : Playing;
                 }
                 else {
                     flag(tileX, tileY);

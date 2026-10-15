@@ -21,6 +21,7 @@ struct Tile {
     GameProgress reveal();
     void flag();
     void toggleRevealed();
+    void toggleMine();
     bool isMine();
     bool isFlagged();
     bool isRevealed();
