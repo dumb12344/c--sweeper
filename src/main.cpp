@@ -22,7 +22,8 @@
 #include <emscripten.h>
 #endif
 
-namespace constants {
+namespace constants
+{
     float TILE_SIZE = 50;
     int SCREEN_WIDTH = 50;
     int SCREEN_HEIGHT = 50;
@@ -49,7 +50,8 @@ static SDL_Renderer * renderer;
 
 static void mainLoop()
 {
-    if (!running) {
+    if (!running)
+    {
         cache::destroyCache(renderer);
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
@@ -64,79 +66,95 @@ static void mainLoop()
     SDL_Event event;
     bool shift;
     #ifdef __EMSCRIPTEN__
-    while (SDL_PollEvent(&event)) {
+    while (SDL_PollEvent(&event))
     #else
-    while (SDL_WaitEvent(&event)) {
+    while (SDL_WaitEvent(&event))
     #endif
-        if (event.type == SDL_EVENT_QUIT) {
-            running = false;
-            return;
-        }
-
-        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_Q) {
+    {
+        if ((event.type == SDL_EVENT_QUIT) || (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_Q))
+        {
             running = false;
             return;
         }
 
         GameState::getInstance().progress = GameState::getInstance().remainingTiles <= 0 ? Win : GameState::getInstance().progress;
 
-        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_M) {
-            for (int x = 0; x < constants::SIZE_X; x++) {
-                for (int y = 0; y < constants::SIZE_Y; y++) {
+        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_M)
+        {
+            for (int x = 0; x < constants::SIZE_X; x++)
+            {
+                for (int y = 0; y < constants::SIZE_Y; y++)
+                {
                     if (!tiles[x][y].isMine()) revealNoSpread(x, y);
                 }
             }
         }
 
-        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_Y) {
-            for (int x = 0; x < constants::SIZE_X; x++) {
-                for (int y = 0; y < constants::SIZE_Y; y++) {
+        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_Y)
+        {
+            for (int x = 0; x < constants::SIZE_X; x++)
+            {
+                for (int y = 0; y < constants::SIZE_Y; y++)
+                {
                     if (tiles[x][y].state == TileState::REVEALED_MINE) tiles[x][y].state = TileState::HIDDEN_MINE;
                 }
             }
             GameState::getInstance().progress = GameProgress::Playing;
         }
 
-        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
+        if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R)
+        {
             init();
         }
 
-        if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
+        if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP)
+        {
             shift = event.key.mod & SDL_KMOD_LSHIFT;
         }
 
-        if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+        if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+        {
             int tileX = floor((event.button.x - constants::OFFSET_X) / constants::TILE_SIZE);
             int tileY = floor((event.button.y - constants::OFFSET_Y) / constants::TILE_SIZE);
             if (outOfBounds(tileX, tileY)) continue;
-            if (event.button.button == SDL_BUTTON_LEFT) {
-                if (shift) {
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                if (shift)
+                {
                     Tile& tile = tiles[tileX][tileY];
-                    if (!tile.isRevealed()) {
+                    if (!tile.isRevealed())
+                    {
                         GameState::getInstance().remainingTiles += tile.isMine() ? 1 : -1;
                     }
                     tile.toggleMine();
                     initSurroundingMines();
                     GameState::getInstance().progress = GameState::getInstance().remainingTiles <= 0 ? Win : Playing;
                 }
-                else {
-                    if (GameState::getInstance().progress != Playing) {
+                else
+                {
+                    if (GameState::getInstance().progress != Playing)
+                    {
                         init();
                     }
-                    else {
+                    else
+                    {
                         reveal(tileX, tileY);
                     }
                 }
             }
-            else if (event.button.button == SDL_BUTTON_RIGHT) {
-                if (shift) {
+            else if (event.button.button == SDL_BUTTON_RIGHT)
+            {
+                if (shift)
+                {
                     tiles[tileX][tileY].toggleRevealed();
-                    if (!tiles[tileX][tileY].isMine()) {
+                    if (!tiles[tileX][tileY].isMine())
+                    {
                         GameState::getInstance().remainingTiles += tiles[tileX][tileY].isRevealed() ? -1 : 1;
                     }
                     GameState::getInstance().progress = GameState::getInstance().remainingTiles <= 0 ? Win : Playing;
                 }
-                else {
+                else
+                {
                     flag(tileX, tileY);
                 }
             }
@@ -147,10 +165,13 @@ static void mainLoop()
 
 int main(int argCount, char **argValues)
 {
-    if (argCount > 1) {
+    if (argCount > 1)
+    {
         int opt;
-        while ((opt = getopt(argCount, argValues, "x:y:c:")) != -1) {
-            switch (opt) {
+        while ((opt = getopt(argCount, argValues, "x:y:c:")) != -1)
+        {
+            switch (opt)
+            {
             case 'x':
                 constants::SIZE_X = atoi(optarg);
                 break;
@@ -190,7 +211,8 @@ int main(int argCount, char **argValues)
     #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(mainLoop, 0, 1);
     #else
-    while (1) {
+    while (1)
+    {
         mainLoop();
     }
     #endif

@@ -2,14 +2,16 @@
 #include <vector>
 #include "tiles.h"
 
-enum GameProgress : int {
+enum GameProgress : int
+{
     Initializing,
     Playing,
     Lose,
     Win
 };
 
-struct GameState {
+struct GameState
+{
     GameProgress progress = Initializing;
     int remainingTiles = 0;
     static GameState& getInstance();

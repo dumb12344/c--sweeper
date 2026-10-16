@@ -10,21 +10,11 @@ SDL_Color Tile::getColor()
         case HIDDEN_MINE:
         case FLAGGED_BLANK:
         case FLAGGED_MINE:
-            if (altColor) {
-                return colorHex(0xa2d149);
-            }
-            else {
-                return colorHex(0xaad751);
-            }
+            return altColor ? colorHex(0xa2d149) : colorHex(0xaad751);
         case REVEALED_MINE:
         return SDL_Color{0xFF, 0, 0, 0xFF};
         case REVEALED_BLANK:
-            if (altColor) {
-                return colorHex(0xd7b899);
-            }
-            else {
-                return colorHex(0xe5c29f);
-            }
+            return altColor ? colorHex(0xd7b899) : colorHex(0xe5c29f);
     }
     return SDL_Color{0, 0, 0, 0xFF};
 }
@@ -55,7 +45,8 @@ void Tile::toggleMine() {
 
 bool Tile::isFlagged()
 {
-    switch (state) {
+    switch (state)
+    {
         case FLAGGED_BLANK:
         case FLAGGED_MINE:
             return true;
@@ -66,7 +57,8 @@ bool Tile::isFlagged()
 
 bool Tile::isMine()
 {
-    switch (state) {
+    switch (state)
+    {
         case HIDDEN_MINE:
         case FLAGGED_MINE:
         case REVEALED_MINE:
@@ -78,7 +70,8 @@ bool Tile::isMine()
 
 bool Tile::isRevealed()
 {
-    switch (state) {
+    switch (state)
+    {
         case REVEALED_MINE:
         case REVEALED_BLANK:
             return true;

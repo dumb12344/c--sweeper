@@ -2,7 +2,8 @@
 #include <SDL3/SDL_pixels.h>
 #include "gamemanager.h"
 
-enum TileState {
+enum TileState
+{
     HIDDEN_MINE,
     HIDDEN_BLANK,
     FLAGGED_MINE,

@@ -20,8 +20,10 @@ using namespace constants;
 
 static void drawRevealed(SDL_Renderer * renderer)
 {
-    for (int x = 0; x < SIZE_X; x++) {
-        for (int y = 0; y < SIZE_Y; y++) {
+    for (int x = 0; x < SIZE_X; x++)
+    {
+        for (int y = 0; y < SIZE_Y; y++)
+        {
             Tile& tile = tiles[x][y];
             if (!tile.isRevealed()) continue;
             SDL_Color color = tile.getColor();
@@ -34,8 +36,10 @@ static void drawRevealed(SDL_Renderer * renderer)
 
 static void drawOutline(SDL_Renderer * renderer)
 {
-    for (int x = 0; x < SIZE_X; x++) {
-        for (int y = 0; y < SIZE_Y; y++) {
+    for (int x = 0; x < SIZE_X; x++)
+    {
+        for (int y = 0; y < SIZE_Y; y++)
+        {
             Tile& tile = tiles[x][y];
             if (tile.isRevealed()) continue;
             SDL_Color color = colorHex(0x87af3a);
@@ -53,8 +57,10 @@ static void drawOutline(SDL_Renderer * renderer)
 
 static void drawUnrevealed(SDL_Renderer * renderer)
 {
-    for (int x = 0; x < SIZE_X; x++) {
-        for (int y = 0; y < SIZE_Y; y++) {
+    for (int x = 0; x < SIZE_X; x++)
+    {
+        for (int y = 0; y < SIZE_Y; y++)
+        {
             Tile& tile = tiles[x][y];
             if (tile.isRevealed()) continue;
             SDL_Color color = tile.getColor();
@@ -73,7 +79,8 @@ static void drawSelected(SDL_Renderer * renderer, bool underOutline, float mouse
     Tile& tile = tiles[mouseTileX][mouseTileY];
     if (underOutline && !tile.isRevealed()) return;
     else if (!underOutline && tile.isRevealed()) return;
-    if (tile.surroundingMines > 0 || !tile.isRevealed()) {
+    if (tile.surroundingMines > 0 || !tile.isRevealed())
+    {
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF * 0.2);
         SDL_FRect tileRect = {(float) mouseTileX * TILE_SIZE + OFFSET_X, (float) mouseTileY * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
         SDL_RenderFillRect(renderer, &tileRect);
@@ -82,15 +89,19 @@ static void drawSelected(SDL_Renderer * renderer, bool underOutline, float mouse
 
 static void drawExtras(SDL_Renderer * renderer)
 {
-    for (int x = 0; x < SIZE_X; x++) {
-        for (int y = 0; y < SIZE_Y; y++) {
+    for (int x = 0; x < SIZE_X; x++)
+    {
+        for (int y = 0; y < SIZE_Y; y++)
+        {
             Tile& tile = tiles[x][y];
-            if (tile.isFlagged()) {
+            if (tile.isFlagged())
+            {
                 SDL_FRect destination_rect = {(float) x * TILE_SIZE + OFFSET_X, (float) y * TILE_SIZE + OFFSET_Y, TILE_SIZE, TILE_SIZE};
                 SDL_RenderTexture(renderer, cache::flag_texture, NULL, &destination_rect);
             }
 
-            if (tile.surroundingMines > 0 && tile.isRevealed() && !tile.isMine()) {
+            if (tile.surroundingMines > 0 && tile.isRevealed() && !tile.isMine())
+            {
                 SDL_Texture * texture = cache::number_textures[tile.surroundingMines];
                 SDL_FRect destination_rect = {
                     (float) x * TILE_SIZE + (TILE_SIZE - texture -> w) / 2.0f + OFFSET_X,
@@ -103,7 +114,8 @@ static void drawExtras(SDL_Renderer * renderer)
         }
     }
 
-    if (GameState::getInstance().progress == Lose || GameState::getInstance().progress == Win) {
+    if (GameState::getInstance().progress == Lose || GameState::getInstance().progress == Win)
+    {
         SDL_Texture * texture = GameState::getInstance().progress == Lose ? cache::lose_text : cache::win_text;
         SDL_FRect destination_rect = {
             (float) (constants::SCREEN_WIDTH - texture -> w) / 2.0f,

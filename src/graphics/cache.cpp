@@ -5,7 +5,8 @@
 #include "../constants.h"
 #include <stdlib.h>
 
-namespace cache {
+namespace cache
+{
     SDL_Texture * number_textures[10];
     TTF_Font * font;
     SDL_Texture * flag_texture;
@@ -26,7 +27,8 @@ namespace cache {
         SDL_Surface * surface = IMG_Load_IO(imageStream, true);
         cache::flag_texture = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_DestroySurface(surface);
-        if (!cache::flag_texture) {
+        if (!cache::flag_texture)
+        {
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Flag texture failed to load");
             exit(1);
         }
@@ -34,7 +36,8 @@ namespace cache {
         SDL_IOStream * fontStream = SDL_IOFromConstMem(fontData, sizeof(fontData));
         cache::font = TTF_OpenFontIO(fontStream, true, constants::TILE_SIZE);
 
-        for (int i = 0; i <= 9; i++) {
+        for (int i = 0; i <= 9; i++)
+        {
             SDL_Surface * surface = TTF_RenderText_Blended(font, std::to_string(i).c_str(), 0, colorHex(constants::NUMBER_COLORS[i]));
             number_textures[i] = SDL_CreateTextureFromSurface(renderer, surface);
             SDL_DestroySurface(surface);
@@ -62,7 +65,8 @@ namespace cache {
 
     void destroyCache(SDL_Renderer * renderer)
     {
-        for (int i = 0; i <= 9; i++) {
+        for (int i = 0; i <= 9; i++)
+        {
             SDL_DestroyTexture(cache::number_textures[i]);
         }
         TTF_CloseFont(cache::font);

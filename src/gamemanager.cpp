@@ -7,7 +7,8 @@
 
 std::vector<std::vector<Tile>> tiles;
 
-GameState& GameState::getInstance() {
+GameState& GameState::getInstance()
+{
     static GameState instance;
     return instance;
 }
@@ -20,9 +21,11 @@ bool outOfBounds(int x, int y)
 static void initTiles()
 {
     tiles = std::vector<std::vector<Tile>>(constants::SIZE_X);
-    for (int x = 0; x < constants::SIZE_X; x++) {
+    for (int x = 0; x < constants::SIZE_X; x++)
+    {
         tiles[x] = std::vector<Tile>(constants::SIZE_Y);
-        for (int y = 0; y < constants::SIZE_Y; y++) {
+        for (int y = 0; y < constants::SIZE_Y; y++)
+        {
             bool alt_color = (x % 2 == 0) ^ (y % 2 == 0);
             tiles[x][y] = Tile {TileState::HIDDEN_BLANK, 0, alt_color};
         }
@@ -36,7 +39,8 @@ static void initMines()
     while (remainingMines > 0) {
         int randX = rand() % constants::SIZE_X;
         int randY = rand() % constants::SIZE_Y;
-        if (tiles[randX][randY].state == HIDDEN_BLANK) {
+        if (tiles[randX][randY].state == HIDDEN_BLANK)
+        {
             tiles[randX][randY].state = HIDDEN_MINE;
             remainingMines--;
         }
@@ -46,11 +50,15 @@ static void initMines()
 
 void initSurroundingMines()
 {
-    for (int x = 0; x < constants::SIZE_X; x++) {
-        for (int y = 0; y < constants::SIZE_Y; y++) {
+    for (int x = 0; x < constants::SIZE_X; x++)
+    {
+        for (int y = 0; y < constants::SIZE_Y; y++)
+        {
             int surroundingMines = 0;
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dy = -1; dy <= 1; dy++) {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
                     if (outOfBounds(x + dx, y + dy)) continue;
                     if (tiles[x + dx][y + dy].isMine()) surroundingMines++;
                 }
@@ -74,18 +82,24 @@ void reveal(int x, int y)
     if (GameState::getInstance().progress != Playing) return;
     if (tiles[x][y].isRevealed()) return;
     revealNoSpread(x, y);
-    if (tiles[x][y].surroundingMines == 0) {
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
+    if (tiles[x][y].surroundingMines == 0)
+    {
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dy = -1; dy <= 1; dy++)
+            {
                 if (outOfBounds(x + dx, y + dy)) continue;
                 if (dx == 0 && dy == 0) continue;
                 reveal(x + dx, y + dy);
             }
         }
     }
-    if (GameState::getInstance().progress == Lose) {
-        for (int revealX = 0; revealX < constants::SIZE_X; revealX++) {
-            for (int revealY = 0; revealY < constants::SIZE_Y; revealY++) {
+    if (GameState::getInstance().progress == Lose)
+    {
+        for (int revealX = 0; revealX < constants::SIZE_X; revealX++)
+        {
+            for (int revealY = 0; revealY < constants::SIZE_Y; revealY++)
+            {
                 if (revealX == x && revealY == y) continue;
                 if (tiles[revealX][revealY].isMine()) revealNoSpread(revealX, revealY);
             }

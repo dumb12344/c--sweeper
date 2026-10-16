@@ -2,7 +2,8 @@
 #include "graphics/drawboard.h"
 #include <SDL3/SDL_pixels.h>
 
-namespace constants {
+namespace constants
+{
     extern int SIZE_X;
     extern int SIZE_Y;
     extern int MINE_COUNT;
